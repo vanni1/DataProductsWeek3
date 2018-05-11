@@ -1,0 +1,45 @@
+---
+title: "Data products week 3 assignment"
+author: "Vanni de Clippele"
+date: "11 mei 2018"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Absenteism in a company
+
+Employees have been divided by gender and age group.
+
+Both sickness leave and leaves for other reasons (mainly career interuptions) have been plotted.
+
+## Code
+```{r code, echo=TRUE, warning=FALSE, message=FALSE}
+library(plotly)
+
+file <- "D:/Coursera/DataScientist/Github/absenteism.csv"
+abs <-read.csv(file,header=TRUE,sep=";")
+
+p <- abs %>%
+     plot_ly(
+        y = ~Sickness, x = ~Leave, 
+        text = ~gender, hoverinfo = "text",
+        size = ~PP, 
+        color = ~factor(age.group),
+        frame = ~factor(period), 
+        type = 'scatter',mode = 'markers'
+    ) %>%
+    layout(yaxis = list(tickformat = "%"),
+           xaxis = list(tickformat = "%") ) %>% 
+    animation_opts(1500, easing = "cubic-in", redraw = FALSE) %>%
+    animation_slider(currentvalue = list(prefix = "YearMonth ", 
+                                         font = list(color="red")))
+```
+## Plot with plotly
+
+```{r plot, echo=FALSE, warning=FALSE, message=FALSE}
+p
+```
+
